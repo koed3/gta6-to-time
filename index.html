@@ -8,7 +8,7 @@
         body {
             margin: 0;
             padding: 0;
-            background-color: #0b0b0b;
+            background: radial-gradient(circle, #1a1a2e 0%, #0b0b0b 100%);
             color: #ffffff;
             font-family: 'Arial', sans-serif;
             display: flex;
@@ -21,174 +21,213 @@
             position: absolute;
             top: 20px;
             right: 20px;
-            background: none;
-            border: 2px solid #fff;
+            background: linear-gradient(45deg, #ff00ff, #00ffff);
+            border: none;
             color: #fff;
-            padding: 10px 15px;
+            font-weight: bold;
+            padding: 12px 20px;
             font-size: 16px;
             cursor: pointer;
-            border-radius: 5px;
-            transition: all 0.3s;
+            border-radius: 30px;
+            box-shadow: 0 0 10px rgba(255, 0, 255, 0.5);
+            transition: all 0.3s ease;
             z-index: 10;
         }
         #mute-btn:hover {
-            background-color: #fff;
-            color: #000;
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.8);
         }
         .container {
             display: flex;
             align-items: center;
-            gap: 50px;
+            gap: 60px;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 50px;
+            border-radius: 30px;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
         }
         .timer-box {
             text-align: center;
-            background: rgba(255, 255, 255, 0.05);
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 0 20px rgba(255, 0, 255, 0.2);
-            border: 1px solid #ff00ff;
         }
         .timer-box h1 {
             margin-top: 0;
-            font-size: 24px;
-            letter-spacing: 2px;
-            color: #00ffff;
+            font-size: 28px;
+            letter-spacing: 3px;
+            background: linear-gradient(45deg, #00ffff, #ff00ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 900;
         }
         #clock {
-            font-size: 48px;
+            font-size: 54px;
             font-weight: bold;
             font-family: 'Courier New', Courier, monospace;
+            text-shadow: 0 0 20px rgba(0, 255, 255, 0.6);
+            color: #fff;
+            margin-top: 20px;
         }
         .cd-container {
             position: relative;
             cursor: pointer;
+            text-align: center;
         }
         .cd {
-            width: 150px;
-            height: 150px;
+            width: 180px;
+            height: 180px;
             border-radius: 50%;
-            background: radial-gradient(circle, #111 20%, #333 40%, #111 50%, #555 60%, #111 70%);
-            border: 5px solid #222;
-            box-shadow: 0 0 15px rgba(0,0,0,0.5);
+            background: radial-gradient(circle,
+                #111 12%, 
+                #ff00ff 13%, 
+                #00ffff 25%, 
+                #333 28%, 
+                #222 45%, 
+                #ff007f 65%, 
+                #111 70%
+            );
+            border: 6px solid #333;
+            box-shadow: 0 0 25px rgba(0, 0, 0, 0.8), 0 0 10px rgba(255, 0, 255, 0.3);
             display: flex;
             justify-content: center;
             align-items: center;
-            transition: transform 0.3s;
+            position: relative;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-        .cd::after {
+        .cd::before {
             content: '';
-            width: 30px;
-            height: 30px;
-            background-color: #0b0b0b;
+            position: absolute;
+            width: 100%;
+            height: 100%;
             border-radius: 50%;
-            border: 2px solid #fff;
+            background: linear-gradient(150deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0) 50%, rgba(255,255,255,0.15) 100%);
+        }
+        .cd-hole {
+            width: 45px;
+            height: 45px;
+            background: #0b0b0b;
+            border-radius: 50%;
+            border: 4px solid #fff;
+            z-index: 2;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.8);
         }
         .cd:hover {
-            transform: scale(1.05);
+            transform: scale(1.08) rotate(5deg);
         }
         @keyframes rotateCD {
             from { transform: rotate(0deg); }
             to { transform: rotate(360deg); }
         }
         .playing {
-            animation: rotateCD 3s linear infinite;
+            animation: rotateCD 4s linear infinite;
+            box-shadow: 0 0 40px rgba(255, 0, 255, 0.8), 0 0 20px rgba(0, 255, 255, 0.5);
+            border-color: #00ffff;
         }
         .cd-label {
             text-align: center;
-            margin-top: 10px;
+            margin-top: 15px;
             font-size: 14px;
+            font-weight: bold;
             color: #aaa;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: color 0.3s;
+        }
+        .text-playing {
+            color: #00ffff;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.6);
         }
     </style>
 </head>
 <body>
-
     <button id="mute-btn">🔊 음소거</button>
-
     <div class="container">
         <div class="timer-box">
             <h1>GTA VI COUNTDOWN</h1>
             <div id="clock">00d 00h 00m 00s</div>
         </div>
-
         <div>
             <div class="cd-container" id="cd-player">
-                <div class="cd" id="cd-disk"></div>
+                <div class="cd" id="cd-disk">
+                    <div class="cd-hole"></div>
+                </div>
             </div>
-            <div class="cd-label">Click to Play BGM</div>
+            <div class="cd-label" id="cd-text">Click to Play BGM</div>
         </div>
     </div>
-
     <audio id="tick-sound" src="tick.mp3"></audio>
-    <audio id="bgm" src="san_andreas.mp3" loop></audio>
-
+    <audio id="bgm" src="san_andreas.MP3" loop></audio>
     <script>
-        const targetDate = new Date("November 19, 2026 00:00:00").getTime();
-    
-      const clockDisplay = document.getElementById("clock");
+        const targetDate = new Date("October 1, 2026 00:00:00").getTime();
+        
+        const clockDisplay = document.getElementById("clock");
         const muteBtn = document.getElementById("mute-btn");
         const cdPlayer = document.getElementById("cd-player");
         const cdDisk = document.getElementById("cd-disk");
+        const cdText = document.getElementById("cd-text");
         const tickSound = document.getElementById("tick-sound");
         const bgm = document.getElementById("bgm");
-    
-      let isMuted = false;
+
+        let isMuted = false;
         let isBgmPlaying = false;
-      
-      const timerInterval = setInterval(function() {
+        
+        const timerInterval = setInterval(function() {
             const now = new Date().getTime();
             const difference = targetDate - now;
-       
-        const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+
+            const days = Math.floor(difference / (1000 * 60 * 60 * 24));
             const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((difference % (1000 * 60)) / 1000);
-          
-        clockDisplay.innerHTML = 
+
+            clockDisplay.innerHTML = 
                 `${String(days).padStart(2, '0')}d ` +
                 `${String(hours).padStart(2, '0')}h ` +
                 `${String(minutes).padStart(2, '0')}m ` +
                 `${String(seconds).padStart(2, '0')}s`;
-         
-        if (difference < 0) {
+
+            if (difference < 0) {
                 clearInterval(timerInterval);
                 clockDisplay.innerHTML = "GTA 6 RELEASED!";
                 return;
-            }   
-        if (!isMuted) {
+            }
+
+            if (!isMuted) {
                 tickSound.currentTime = 0; 
-                tickSound.play().catch(e => console.log("유저 상호작용 필요: ", e));
+                tickSound.play().catch(e => console.log("상호작용 필요"));
             }
         }, 1000);
-      
-      cdPlayer.addEventListener("click", () => {
+        cdPlayer.addEventListener("click", () => {
             if (isBgmPlaying) {
                 bgm.pause();
                 cdDisk.classList.remove("playing");
+                cdText.classList.remove("text-playing");
+                cdText.innerHTML = "Click to Play BGM";
                 isBgmPlaying = false;
             } else {
                 if (!isMuted) {
-                    bgm.play().catch(e => console.log(e));
+                    bgm.play().catch(e => {
+                        console.log("재생 실패:", e);
+                        alert("음악 파일을 불러오지 못했습니다. 파일 이름 대소문자를 확인해 주세요!");
+                    });
                 }
                 cdDisk.classList.add("playing");
+                cdText.classList.add("text-playing");
+                cdText.innerHTML = "Now Playing...";
                 isBgmPlaying = true;
             }
         });
         muteBtn.addEventListener("click", () => {
             if (!isMuted) {
-                // 음소거 실행
                 isMuted = true;
                 muteBtn.innerHTML = "🔇 음성 끔";
-                
                 tickSound.volume = 0;
                 bgm.volume = 0;
             } else {
                 isMuted = false;
                 muteBtn.innerHTML = "🔊 음소거";
-                
                 tickSound.volume = 1;
                 bgm.volume = 1;
-
                 if (isBgmPlaying) {
                     bgm.play().catch(e => console.log(e));
                 }
